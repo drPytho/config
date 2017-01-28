@@ -1,0 +1,40 @@
+#!/bin/bash
+trap 'jobs -p | xargs kill' EXIT
+
+compton=/usr/bin
+dunst=/usr/bin
+
+bspdir=$(dirname $(readlink -f $0))
+cd $bspdir
+
+xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
+
+# hide mouse on writting
+if $(hash unclutter); then
+    unclutter -idle 1 &
+fi
+
+# music daemon
+if $(hash mpd); then
+    mpd &
+fi
+
+# gnome settings daemon (for fonts and gtk styling)
+gnome-settings-daemon &
+
+# set background
+# gsettings set org.gnome.desktop.background picture-uri file:///home/user/Pictures/wallpaper.png
+
+feh --bg-tile $bspdir/res/wallpapers/wallpaper.jpg &
+
+[[ -e $dunst/dunst ]] \
+    && $dunst/dunst -config $bspdir/panels/dunstrc &
+
+# launch compton compositor
+[[ -e $compton/compton ]] \
+  && $compton/compton --config $bspdir/compton.conf &
+
+# launch bar
+$bspdir/scripts/start_bar.sh &
+
+wait

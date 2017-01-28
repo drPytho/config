@@ -1,0 +1,54 @@
+# vim: set foldmarker={{,}} foldlevel=0 foldmethod=marker nospell:
+#
+# bspwm hotkeys
+#
+
+# general hotkeys {{
+alt + super + Escape
+    ~/.config/bspwm/amisc/killall ; bspc quit 1
+
+# make sxhkd reload its configuration files:
+super + Escape
+    pkill -USR1 -x sxhkd; dunstify "Sxhkd configuration reloaded"
+
+# Close current window
+super + w
+    bspc node -c
+
+super + g
+    bspc node -s biggest
+
+super + {t, shift + t, s, f}
+    bspc node -t {tiled, pseudo_tilled, floating, fullscreen}
+
+super + {_, shift + }{h,j,k,l}
+    bspc node -{f,s} {west, south, north, east}
+
+super + q
+    ~/.config/bspwm/scripts/lock.sh
+
+super + space
+    rofi -show run
+
+super + e
+    gnome-terminal
+
+XF86AudioMute
+    pactl set-sink-mute 0 toggle
+
+XF86Audio{LowerVolume,RaiseVolume}
+    pactl set-sink-volume 0 {-,+}5% #Change the volume
+
+# Sreen brightness controls
+XF86MonBrightness{Up,Down}
+    xbacklight -{inc,dec} 10 # increase screen brightness
+
+super + XF86MonBrightness{Up,Down}
+    xbacklight -{inc,dec} 1 # increase screen brightness
+ 
+super + {_,shift + }{1-9,0}
+    bspc {desktop -f,node -d} '^{1-9,10}'
+
+# }}
+
+

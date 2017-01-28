@@ -1,0 +1,108 @@
+
+##
+# ZSH setting
+##
+export ZSH=$HOME/.oh-my-zsh
+ZSH_THEME="filip"
+HIST_STAMP="yyyy-mm-dd"
+plugins=(git)
+source $ZSH/oh-my-zsh.sh
+
+##
+# FUnctions
+##
+function calc() {
+    echo $1 | bc -l
+}
+
+function mkd() {
+	mkdir -p "$@" && cd "$_";
+}
+
+
+# Determine size of a file or total size of a directory
+function fs() {
+	if du -b /dev/null > /dev/null 2>&1; then
+		local arg=-sbh;
+	else
+		local arg=-sh;
+	fi
+	if [[ -n "$@" ]]; then
+		du $arg -- "$@";
+	else
+		du $arg .[^.]* *;
+	fi;
+}
+
+function atp() {
+    export PATH="$PATH:$1"
+}
+
+function up() {
+  local d=".."
+  for ((i=1 ; i <= $1-1 ; i++))
+  do
+      d=$d/..
+  done
+  cd $d
+}
+
+
+##
+# Exports
+##
+export TERM="xterm-256color"
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/texbin:/usr/local/sbin"
+atp "$HOME/bin"
+
+
+# Android dev
+export ANDROID_HOME="$HOME/.bin/android-sdk-linux"
+atp "$HOME/.bin/android-sdk-linux/platform-tools"
+
+
+# Golang
+export GOPATH=$HOME/workspace/golang
+export GOROOT=/usr/local/go
+atp $GOROOT/bin
+atp $GOPATH/bin
+
+# Node
+atp /usr/local/node-v7.1.0-linux-x64/bin
+
+# Personal bins
+atp $HOME/.bin
+
+# Rust-lang
+atp "~/.cargo/bin"
+
+##
+# Ailias
+##
+# Good to have
+alias g="git"
+alias lsd="ls -lF | grep --color=never '^d'"
+alias week="date +%V"
+alias reload="exec $SHELL -l"
+alias up2="up 2"
+alias up3="up 3"
+alias up4="up 4"
+alias up5="up 5"
+alias up6="up 6"
+alias up7="up 7"
+alias tmux="TERM=screen-256color-bce tmux"
+alias vim="nvim"
+alias v="nvim"
+
+
+# Replacement
+command -v hd      > /dev/null || alias hd="hexdump -C"
+command -v md5sum  > /dev/null || alias md5sum="md5"
+command -v sha1sum > /dev/null || alias sha1sum="shasum"
+
+
+PATH="/home/drpytho/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="/home/drpytho/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/home/drpytho/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/home/drpytho/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/home/drpytho/perl5"; export PERL_MM_OPT;
