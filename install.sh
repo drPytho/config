@@ -3,24 +3,32 @@ DIR=$( cd "$( dirname "$0" )" && pwd )
 
 # Removed a file safely, del if symlink, move if real file.
 safeDel(){
-    if [ ! -f $1 ]; then
+    echo "Safe del of" $1
+    if [ ! -e $1 ]; then
+        echo "File did not exist before"
         return
     fi
     if [ -L $1 ]; then
         # Delete the symlink
+        echo "Deleteing the symlink" $1
         rm $1
         return
     fi
 
     if [ -f $1 ]; then
+        echo "Moving file" $1 "to" $1.old
         rm $1.old
         mv $1 $1.old
+        return
     fi
+    echo "Did noting with this file" $1
 }
 
 newSymln(){
+    echo "installing" $1 $2
     safeDel $2
     ln -s $1 $2
+    echo
 }
 
 newSymln $DIR/terminal/zsh $HOME/.zsh
